@@ -40,4 +40,30 @@ contract TokenVesting {
         interval = 90 days; // 3 months in seconds
         totalAmount = _amount;
     }
+
+    function release() external {
+        require(block.timestamp >= cliff, "Cliff period not reached");
+        uint256 unreleased = releasableAmount();
+        require(unreleased > 0, "No tokens to release");
+
+        released += unreleased;
+        require(token.transfer(beneficiary, unreleased), "Token transfer failed");
+    }
+
+    function releasableAmount() public view returns (uint256) {
+        return vestedAmount() - released;
+    }
+
+    function vestedAmount() public view returns (uint256) {
+        if (block.timestamp < cliff) {
+            return 0;
+        } else if (block.timestamp >= start + duration) {
+            return totalAmount;
+        } else {
+            uint256 elapsedTime = block.timestamp - start;
+            uint256 vestedIntervals = elapsedTime / interval;
+            uint256 totalIntervals = duration / interval;
+            return (totalAmount * vestedIntervals) / totalIntervals;
+        }
+    }
 }
