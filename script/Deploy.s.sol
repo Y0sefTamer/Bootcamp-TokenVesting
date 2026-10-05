@@ -22,14 +22,7 @@ contract Deploy is Script {
         uint256 start = block.timestamp;
         uint256 cliffMonths = 3;
         uint256 totalMonths = 12;
-        TokenVesting vesting = new TokenVesting(
-            address(token),
-            deployer,
-            start,
-            cliffMonths,
-            totalMonths,
-            totalAmount
-        );
+        TokenVesting vesting = new TokenVesting(address(token), deployer, start, cliffMonths, totalMonths, totalAmount);
 
         // Transfer/mint tokens to vesting contract so it holds balance
         // Token was minted to deployer; transfer to vesting
