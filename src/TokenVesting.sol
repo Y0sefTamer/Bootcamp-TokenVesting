@@ -15,6 +15,8 @@ contract TokenVesting {
     uint256 public released;
     uint256 public totalAmount;
 
+    event TokensReleased(address indexed beneficiary, uint256 amount);
+
     constructor(
         address _token,
         address _beneficiary,
@@ -47,6 +49,7 @@ contract TokenVesting {
         require(unreleased > 0, "No tokens to release");
 
         released += unreleased;
+        emit TokensReleased(beneficiary, unreleased);
         require(token.transfer(beneficiary, unreleased), "Token transfer failed");
     }
 
