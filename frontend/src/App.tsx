@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useAccount, useConnect, useDisconnect, useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
-import { formatUnits, parseUnits } from 'viem'
+import { formatUnits } from 'viem'
 import { sepolia } from 'wagmi/chains'
 import addresses from './addresses.json'
 import vestingAbi from './abis/TokenVesting.json'
@@ -8,7 +8,6 @@ import tokenAbi from './abis/MockERC20.json'
 
 const VESTING_ADDRESS = addresses.vesting as `0x${string}`
 const TOKEN_ADDRESS = addresses.token as `0x${string}`
-const MONTH_SECONDS = 30 * 24 * 60 * 60
 const INTERVAL_SECONDS = 90 * 24 * 60 * 60
 
 function formatAmount(amount: bigint, decimals: number) {
@@ -160,7 +159,7 @@ function App() {
           <div><strong>Contracts</strong></div>
           <div style={{ fontSize: 14 }}>Token: {TOKEN_ADDRESS}</div>
           <div style={{ fontSize: 14 }}>Vesting: {VESTING_ADDRESS}</div>
-          <div style={{ fontSize: 14 }}>Interval: {Number(interval || INTERVAL_SECONDS)}s ({Number(interval || INTERVAL_SECONDS)/(24*3600)} days)</div>
+          <div style={{ fontSize: 14 }}>Interval: {Number(interval || INTERVAL_SECONDS)}s ({Math.floor(Number(interval || INTERVAL_SECONDS)/(24*3600))} days)</div>
         </div>
       </div>
 
